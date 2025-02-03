@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center mb-5">Welcome to the Blog Platform</h1>
+
+    {% if current_user.is_authenticated %}
+        <div class="text-center mb-4">
+            <a href="{{ url_for('post.create_post') }}" class="btn btn-primary btn-lg">Create New Post</a>
+            <a href="{{ url_for('messages.inbox') }}" class="btn btn-outline-secondary btn-lg ms-3">Inbox</a>
+            <a href="{{ url_for('messages.sent_messages') }}" class="btn btn-outline-secondary btn-lg ms-3">Sent Messages</a>
+            <a href="{{ url_for('messages.send_message', user_id=1) }}" class="btn btn-success btn-lg ms-3">Send a Message</a>
+        </div>
+    {% endif %}
+
+    <div class="row">
+        {% for post in posts %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{{ url_for('post.post_detail', post_id=post.id) }}" class="text-decoration-none text-dark">
+                                {{ post.title }}
+                            </a>
+                        </h5>
+                        <p class="text-muted small">By <strong>{{ post.author.username }}</strong> on {{ post.date_posted.strftime('%Y-%m-%d %H:%M') }}</p>
+                        <p class="card-text">{{ post.content[:100] }}...</p>
+                        <a href="{{ url_for('post.post_detail', post_id=post.id) }}" class="btn btn-outline-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+        {% if pagination.has_prev %}
+            <a href="{{ url_for('post.home', page=pagination.prev_num) }}" class="btn btn-outline-secondary">Previous</a>
+        {% endif %}
+        {% if pagination.has_next %}
+            <a href="{{ url_for('post.home', page=pagination.next_num) }}" class="btn btn-outline-secondary">Next</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

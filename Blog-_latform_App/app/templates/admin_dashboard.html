@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center mb-5">Admin Dashboard</h1>
+
+    <div class="mb-5">
+        <h2 class="mb-4">Users</h2>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            <form action="{{ url_for('admin.delete_user', user_id=user.id) }}" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mb-5">
+        <h2 class="mb-4">Posts</h2>
+        <ul class="list-group">
+            {% for post in posts %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>{{ post.title }} by {{ post.author.username }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div>
+        <h2 class="mb-4">Comments</h2>
+        <ul class="list-group">
+            {% for comment in comments %}
+            <li class="list-group-item">
+                <span>{{ comment.content }} by {{ comment.author.username }} on <strong>{{ comment.post.title }}</strong></span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

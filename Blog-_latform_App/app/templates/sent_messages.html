@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="text-center mb-4">Sent Messages</h2>
+    {% if messages %}
+        <ul class="list-group">
+            {% for message in messages %}
+                <li class="list-group-item">
+                    <strong>To:</strong> {{ message.recipient.username }}<br>
+                    <strong>Sent at:</strong> {{ message.timestamp.strftime('%Y-%m-%d %H:%M') }}<br>
+                    <p>{{ message.content }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-center">No sent messages.</p>
+    {% endif %}
+
+    <!-- כפתור מעבר למסך הבית -->
+    <div class="text-center mt-4">
+        <a href="{{ url_for('post.home') }}" class="btn btn-primary">Go to Home</a>
+    </div>
+</div>
+{% endblock %}
